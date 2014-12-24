@@ -1,5 +1,7 @@
 package ua.i.pustovalov.taskTwo;
 
+import java.util.Arrays;
+
 class Edge {
     public int srcVert; // Индекс начальной вершины ребра
     public int destVert; // Индекс конечной вершины ребра
@@ -119,6 +121,7 @@ class Graph {
     private int currentVert;
     private PriorityQ thePQ;
     private int nTree; // Количество вершин в дереве
+    static int sum = 0;
 
     // -------------------------------------------------------------
 
@@ -186,52 +189,16 @@ class Graph {
 	    System.out.print(vertexList[sourceVert].label);
 	    System.out.print(vertexList[currentVert].label);
 	    System.out.print(" ");
+	    sum = sum + adjMat[sourceVert][currentVert];
+
 	}
 	// Минимальное остовное дерево построено
-	for (int j = 0; j < nVerts; j++)
+	for (int j = 0; j < nVerts; j++) {
 	    // Снятие пометки с вершин
 	    vertexList[j].isInTree = false;
-    }
-    
-    public void mstw(int a , int b){
-	currentVert = a; // Начиная с ячейки a
-	while (nTree < nVerts - 1) // Пока не все вершины включены в дерево
-	{ // Включение currentVert в дерево
-	    vertexList[currentVert].isInTree = true;
-	    nTree++;
-	    // Вставка в приоритетную очередь ребер, смежных с currentVert
-	    for (int j = 0; j < nVerts; j++) // Для каждой вершины
-	    {
-		if (j == currentVert) // Пропустить, если текущая вершина
-
-		    continue;
-		if (vertexList[j].isInTree) // Пропустить, если уже в дереве
-		    continue;
-		int distance = adjMat[currentVert][j];
-		if (distance == INFINITY) // Пропустить, если нет ребер
-		    continue;
-		putInPQ(j, distance); // Поместить в приоритетную очередь
-	    }
-	    if (thePQ.size() == 0) // Очередь не содержит вершин?
-	    {
-		System.out.println(" GRAPH NOT CONNECTED");
-		return;
-	    }
-	    // Удаление ребра с минимальным расстоянием из очереди
-	    Edge theEdge = thePQ.removeMin();
-	    int sourceVert = theEdge.srcVert;
-	    currentVert = theEdge.destVert;
-	    // Вывод ребра от начальной до текущей вершины
-	    System.out.print(vertexList[sourceVert].label);
-	    System.out.print(vertexList[currentVert].label);
-	    System.out.print(" ");
 	}
-	for (int j = 0; j < nVerts; j++)
-	    // Снятие пометки с вершин
-	    vertexList[j].isInTree = false;
+	System.out.println(sum);
     }
-	
-    
 
     // -------------------------------------------------------------
     public void putInPQ(int newVert, int newDist) {
